@@ -1,0 +1,18 @@
+openapi: 3.0.0
+info:
+  title: cosslan API
+  version: 1.0.0
+paths:
+  /api/v1/line/:
+    get:
+      summary: Say Hello
+      operationId: line
+      tags:
+        - line
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: string

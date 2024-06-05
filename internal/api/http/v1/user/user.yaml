@@ -1,0 +1,51 @@
+openapi: 3.0.0
+info:
+  title: cosslan API
+  version: 1.0.0
+paths:
+  /api/v1/user/login:
+    post:
+      summary: 用户登录
+      operationId: login
+      tags:
+        - user
+      responses:
+        '200':
+          description: 登录成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Response:
+      type: object
+      properties:
+        code:
+          type: integer
+          x-omitempty: false
+          x-go-type-skip-optional-pointer: true
+        msg:
+          type: string
+          x-omitempty: false
+          x-go-type-skip-optional-pointer: true
+        data:
+          type: object
+    UserLoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          x-omitempty: false
+          x-go-type-skip-optional-pointer: true
+          format: email
+        password:
+          type: string
+          x-omitempty: false
+          x-go-type-skip-optional-pointer: true
