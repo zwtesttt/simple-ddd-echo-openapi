@@ -4,7 +4,9 @@ import (
 	linev1 "cosslan/internal/api/http/v1/line"
 	"cosslan/internal/app/dto"
 	"cosslan/internal/app/line"
+	pkghttp "cosslan/pkg/http"
 	"github.com/labstack/echo/v4"
+	"net/http"
 )
 
 var _ linev1.ServerInterface = &LineHandler{}
@@ -23,7 +25,8 @@ func (l *LineHandler) Line(ctx echo.Context) error {
 		CIDR: ctx.QueryParam("cidr"),
 	})
 	if err != nil {
-		return err
+		return pkghttp.Fail(ctx, http.StatusInternalServerError, "create user error")
+
 	}
-	return nil
+	return pkghttp.Success(ctx, "create line success", nil)
 }

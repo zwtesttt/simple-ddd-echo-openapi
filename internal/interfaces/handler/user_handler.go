@@ -22,10 +22,8 @@ func NewUserHandler(useCase user.UseCase) *UserHandler {
 func (u *UserHandler) Login(ctx echo.Context) error {
 	err := u.useCase.CreateUser(ctx.Request().Context(), dto.CreateUserDTO{})
 	if err != nil {
-		pkghttp.Fail(ctx, http.StatusInternalServerError, "create user error")
-		return err
+		return pkghttp.Fail(ctx, http.StatusInternalServerError, "create user error")
 	}
 
-	pkghttp.Success(ctx, "create user success", nil)
-	return nil
+	return pkghttp.Success(ctx, "create user success", nil)
 }
