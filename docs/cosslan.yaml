@@ -38,9 +38,9 @@ info:
     version: 1.0.0
 openapi: 3.0.0
 paths:
-    /api/v1/lan/:
+    /api/v1/line/:
         get:
-            operationId: lan
+            operationId: line
             responses:
                 "200":
                     content:
@@ -50,7 +50,7 @@ paths:
                     description: A successful response
             summary: Say Hello
             tags:
-                - lan
+                - line
     /api/v1/node/:
         get:
             operationId: node
@@ -67,6 +67,12 @@ paths:
     /api/v1/user/login:
         post:
             operationId: login
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UserLoginRequest'
+                required: true
             responses:
                 "200":
                     content:

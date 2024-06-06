@@ -1,4 +1,4 @@
-package line
+package filter
 
 import "go.mongodb.org/mongo-driver/bson"
 

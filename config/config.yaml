@@ -1,0 +1,10 @@
+server:
+  port: "8080"
+  timeout: 30
+  log_level: "debug"
+
+persistence:
+  enabled: true
+  url: "mongodb://localhost:27017"
+  type: "mongodb"
+  db: "cosslan"

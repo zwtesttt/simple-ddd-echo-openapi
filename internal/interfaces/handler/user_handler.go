@@ -1,30 +1,31 @@
 package handler
 
 import (
-	lanv1 "cosslan/internal/api/http/v1/line"
-	nodev1 "cosslan/internal/api/http/v1/node"
 	userv1 "cosslan/internal/api/http/v1/user"
+	"cosslan/internal/app/dto"
+	"cosslan/internal/app/user"
+	pkghttp "cosslan/pkg/http"
 	"github.com/labstack/echo/v4"
+	"net/http"
 )
 
-var _ userv1.ServerInterface = &HttpServer{}
-var _ lanv1.ServerInterface = &HttpServer{}
-var _ nodev1.ServerInterface = &HttpServer{}
+var _ userv1.ServerInterface = &UserHandler{}
 
-type HttpServer struct {
+type UserHandler struct {
+	useCase user.UseCase
 }
 
-func (h HttpServer) Login(ctx echo.Context) error {
-	//TODO implement me
-	panic("implement me")
+func NewUserHandler(useCase user.UseCase) *UserHandler {
+	return &UserHandler{useCase: useCase}
 }
 
-func (h HttpServer) Lan(ctx echo.Context) error {
-	//TODO implement me
-	panic("implement me")
-}
+func (u *UserHandler) Login(ctx echo.Context) error {
+	err := u.useCase.CreateUser(ctx.Request().Context(), dto.CreateUserDTO{})
+	if err != nil {
+		pkghttp.Fail(ctx, http.StatusInternalServerError, "create user error")
+		return err
+	}
 
-func (h HttpServer) Node(ctx echo.Context) error {
-	//TODO implement me
-	panic("implement me")
+	pkghttp.Success(ctx, "create user success", nil)
+	return nil
 }

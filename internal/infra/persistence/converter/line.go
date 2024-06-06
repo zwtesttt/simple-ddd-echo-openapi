@@ -1,72 +1,54 @@
 package converter
 
 import (
-	"cosslan/internal/domain/line"
+	"cosslan/internal/domain/entity"
 	"cosslan/internal/infra/persistence/po"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"time"
 )
 
-func ToPO(l *line.Line) *po.Line {
-	// Convert []byte to primitive.ObjectID
-	userID, err := primitive.ObjectIDFromHex(l.UserID)
-	if err != nil {
-		fmt.Println("Error converting NextNodeID to ObjectID:", err)
-	}
-
-	nextNodeID, err := primitive.ObjectIDFromHex(l.NextNodeID)
-	if err != nil {
-		fmt.Println("Error converting NextNodeID to ObjectID:", err)
-	}
-
-	// Convert int64 to time.Time
-	createdAt := time.Unix(0, l.CreatedAt)
-	updatedAt := time.Unix(0, l.UpdatedAt)
-
-	// Convert int64 to *time.Time
-	var deletedAt *time.Time
-	if l.DeletedAt != 0 {
-		dt := time.Unix(0, l.DeletedAt)
-		deletedAt = &dt
-	}
-
+func ToPOLine(l *entity.Line) *po.Line {
 	return &po.Line{
+		ID:         l.ID.String(),
 		Name:       l.Name,
 		Type:       l.Type,
 		Subnets:    l.Subnets,
-		UserID:     userID,
-		NextNodeID: nextNodeID,
-		CreatedAt:  createdAt,
-		UpdatedAt:  updatedAt,
-		DeletedAt:  deletedAt,
+		UserID:     l.UserID.String(),
+		NextNodeID: l.NextNodeID.String(),
+		CreatedAt:  l.CreatedAt,
+		UpdatedAt:  l.UpdatedAt,
+		DeletedAt:  l.DeletedAt,
 	}
 }
 
-// FromPO converts a PO to a Line entity.
-func FromPO(p *po.Line) *line.Line {
-	// Convert primitive.ObjectID to []byte
-	userID := p.UserID.Bytes()
-	nextNodeID := p.NextNodeID.Bytes()
-
-	// Convert time.Time to int64
-	createdAt := p.CreatedAt.UnixNano()
-	updatedAt := p.UpdatedAt.UnixNano()
-
-	// Convert *time.Time to int64
-	var deletedAt int64
-	if p.DeletedAt != nil {
-		deletedAt = p.DeletedAt.UnixNano()
+func ToEntityLine(p *po.Line) *entity.Line {
+	id, err := primitive.ObjectIDFromHex(p.ID)
+	if err != nil {
+		fmt.Println("error：", err)
+		return nil
 	}
 
-	return &line.Line{
+	userID, err := primitive.ObjectIDFromHex(p.UserID)
+	if err != nil {
+		fmt.Println("error：", err)
+		return nil
+	}
+
+	nextNodeID, err := primitive.ObjectIDFromHex(p.NextNodeID)
+	if err != nil {
+		fmt.Println("error：", err)
+		return nil
+	}
+
+	return &entity.Line{
+		ID:         id,
 		Name:       p.Name,
 		Type:       p.Type,
 		Subnets:    p.Subnets,
 		UserID:     userID,
 		NextNodeID: nextNodeID,
-		CreatedAt:  createdAt,
-		UpdatedAt:  updatedAt,
-		DeletedAt:  deletedAt,
+		CreatedAt:  p.CreatedAt,
+		UpdatedAt:  p.UpdatedAt,
+		DeletedAt:  p.DeletedAt,
 	}
 }

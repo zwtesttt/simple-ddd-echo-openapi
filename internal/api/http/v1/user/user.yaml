@@ -9,6 +9,12 @@ paths:
       operationId: login
       tags:
         - user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequest'
       responses:
         '200':
           description: 登录成功

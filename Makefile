@@ -1,6 +1,10 @@
 
 MODEL_LIST = user line node
 
+.PHONY: run
+run:
+	@go run ./cmd/main.go
+
 .PHONY: gen-openapi
 gen-openapi: $(addprefix gen-openapi-, $(MODEL_LIST))
 
@@ -21,3 +25,21 @@ SWAGGER_MERGER := $(shell command -v go-swagger-merger)
 merge-openapi:
     # 检查是否存在 go-swagger-merger 命令
 	go-swagger-merger -o $(OUTPUT_FILE) $(foreach dir,$(INPUT_DIRS),-i $(dir)/*.yaml)
+
+# Go code format
+.PHONY: fmt
+fmt:
+	@echo "Formatting Go code..."
+	@go fmt ./...
+
+# Go code vet
+.PHONY: vet
+vet:
+	@echo "Checking Go code with go vet..."
+	@go vet ./...
+
+
+# Run all checks and formats
+.PHONY: check
+check: vet fmt
+	@echo "All checks and formatting done."

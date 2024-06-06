@@ -2,6 +2,7 @@ package handler
 
 import (
 	linev1 "cosslan/internal/api/http/v1/line"
+	"cosslan/internal/app/dto"
 	"cosslan/internal/app/line"
 	"github.com/labstack/echo/v4"
 )
@@ -17,6 +18,12 @@ func NewLineHandler(useCase line.UseCase) *LineHandler {
 }
 
 func (l *LineHandler) Line(ctx echo.Context) error {
-	//TODO implement me
-	panic("implement me")
+	err := l.useCase.CreateLine(ctx.Request().Context(), dto.CreateLineDTO{
+		Name: ctx.QueryParam("name"),
+		CIDR: ctx.QueryParam("cidr"),
+	})
+	if err != nil {
+		return err
+	}
+	return nil
 }

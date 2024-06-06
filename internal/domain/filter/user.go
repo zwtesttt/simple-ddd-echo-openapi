@@ -1,14 +1,17 @@
-package user
+package filter
 
-import "go.mongodb.org/mongo-driver/bson"
+import (
+	"cosslan/internal/domain/entity"
+	"go.mongodb.org/mongo-driver/bson"
+)
 
 // UserFilter 是用于查询用户的过滤条件
 type UserFilter struct {
 	ID     string
 	Name   string
 	Email  string
-	Status UserStatus
-	Role   UserRole
+	Status entity.UserStatus
+	Role   entity.UserRole
 	// 可以添加其他可能的查询条件
 }
 

@@ -1,15 +1,17 @@
 package line
 
 import (
-	"cosslan/internal/domain/line"
+	"cosslan/config"
+	"cosslan/internal/domain/service"
 )
 
-type LineService struct {
-	repo line.LineService
+type Service struct {
+	repo service.LineService
 }
 
-func NewLineService(repo line.LineService) *LineService {
-	return &LineService{repo: repo}
+func NewLineService(cfg config.Config) *Service {
+
+	return &Service{repo: service.NewLineService(cfg)}
 }
 
 //// CreateLan handles the logic for creating a LAN.

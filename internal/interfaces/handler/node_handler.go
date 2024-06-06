@@ -1,30 +1,26 @@
 package handler
 
 import (
-	lanv1 "cosslan/internal/api/http/v1/line"
 	nodev1 "cosslan/internal/api/http/v1/node"
-	userv1 "cosslan/internal/api/http/v1/user"
+	"cosslan/internal/app/dto"
+	"cosslan/internal/app/node"
 	"github.com/labstack/echo/v4"
 )
 
-var _ userv1.ServerInterface = &HttpServer{}
-var _ lanv1.ServerInterface = &HttpServer{}
-var _ nodev1.ServerInterface = &HttpServer{}
+var _ nodev1.ServerInterface = &NodeHandler{}
 
-type HttpServer struct {
+type NodeHandler struct {
+	useCase node.UseCase
 }
 
-func (h HttpServer) Login(ctx echo.Context) error {
-	//TODO implement me
-	panic("implement me")
+func NewNodeHandler(useCase node.UseCase) *NodeHandler {
+	return &NodeHandler{useCase: useCase}
 }
 
-func (h HttpServer) Lan(ctx echo.Context) error {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (h HttpServer) Node(ctx echo.Context) error {
-	//TODO implement me
-	panic("implement me")
+func (n *NodeHandler) Node(ctx echo.Context) error {
+	err := n.useCase.CreateNode(ctx.Request().Context(), dto.CreateNodeDTO{})
+	if err != nil {
+		return err
+	}
+	return nil
 }
